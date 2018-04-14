@@ -51,7 +51,8 @@ class MethodDatabase:
     def find_methods(self, search_string, stage=None, limit=100):
         """Find all methods that match the search string"""
         session = self.database.session()
-        q = session.query(models.Method).filter(models.Method.name.ilike(f'%{search_string}%'))
+        wildcard_search_string = search_string.replace(' ', '%')
+        q = session.query(models.Method).filter(models.Method.name.ilike(f'%{wildcard_search_string}%'))
         if stage:
             q = q.filter(models.Method.stage == stage)
         if limit:
