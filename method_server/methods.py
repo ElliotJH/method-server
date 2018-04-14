@@ -48,12 +48,14 @@ class MethodDatabase:
             session.add_all([method_set_m, *methods])
         session.commit()
 
-    def find_methods(self, search_string, stage=None):
+    def find_methods(self, search_string, stage=None, limit=100):
         """Find all methods that match the search string"""
         session = self.database.session()
         q = session.query(models.Method).filter(models.Method.name.ilike(f'%{search_string}%'))
         if stage:
             q = q.filter(models.Method.stage == stage)
+        if limit:
+            q = q.limit(limit)
 
         return q.all()
 
