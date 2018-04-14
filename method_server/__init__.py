@@ -1,5 +1,6 @@
 import argparse
 import re
+import os
 from aiohttp import web
 
 import method_server.models
@@ -30,4 +31,4 @@ def main():
     app = web.Application()
     app.router.add_get('/method', do_search)
 
-    web.run_app(app, port=8081)
+    web.run_app(app, port=int(os.environ.get('PORT', 8081)))
