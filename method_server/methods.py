@@ -61,4 +61,8 @@ class MethodDatabase:
         if not method.definitions:
             self.api.get_lead_head_and_blocks(method.method_db_id)
 
+    def count_methods(self):
+        session = self.database.session()
+        return session.query(models.Method).count()
+
 class ArgumentError(ValueError): pass

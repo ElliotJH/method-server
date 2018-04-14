@@ -28,7 +28,16 @@ def main():
                                  dumps=json.dumps,
                                  headers={'Access-Control-Allow-Origin': '*'})
 
+    async def get_status(request):
+        return web.json_response({
+            'status' : 'OK',
+            'methods' : {
+                'count' : method_db.count_methods()
+            }
+        })
+
     app = web.Application()
     app.router.add_get('/method', do_search)
+    app.router.add_get('/healthz', get_status)
 
     web.run_app(app, port=int(os.environ.get('PORT', 8081)))
