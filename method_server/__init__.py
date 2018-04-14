@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--create', action='store_true')
     args = parser.parse_args()
-    database = db.Database()
+    database = db.Database(os.environ.get('DATABASE_URL'))
     method_db = methods.MethodDatabase(database)
     if args.create:
         method_db.update()

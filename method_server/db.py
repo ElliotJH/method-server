@@ -8,7 +8,9 @@ __DEBUG__ = True
 
 
 class Database:
-    def __init__(self, cs='sqlite:///db.sqlite'):
+    def __init__(self, cs=None):
+        if cs is None:
+            cs = 'sqlite:///db.sqlite'
         self.connection_string = cs
         self.engine = sqlalchemy.create_engine(cs)
         Model.metadata.create_all(self.engine)
