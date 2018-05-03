@@ -1,4 +1,5 @@
 import argparse
+import logging
 import re
 import os
 from aiohttp import web
@@ -19,12 +20,16 @@ def main():
     async def do_search(request):
         q = request.query.get('query')
         if not isinstance(q, str):
+            logging.error("do_search: bad request, no string query included")
             return web.HTTPBadRequest(reason="Include a string query", headers={'Access-Control-Allow-Origin': '*'})
 
         if len(q) < 3:
+            logging.info("do_search: bad request, query is too show")
             return web.HTTPBadRequest(reason="Must have at least 3 characters in the search string", headers={'Access-Control-Allow-Origin': '*'})
         search_string = re.sub('[^a-z ]', '', q.lower()) # abundance of caution
-        return web.json_response({'methods' : method_db.find_methods(search_string)},
+        search_result = method_db.find_methods(search_string)
+        logging.info(f"do_search: searching for {search_string}, {len(search_result)} results")
+        return web.json_response({'methods' : search_result},
                                  dumps=json.dumps,
                                  headers={'Access-Control-Allow-Origin': '*'})
 
