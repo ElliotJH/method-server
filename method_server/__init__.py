@@ -12,6 +12,8 @@ def main():
     parser.add_argument('--create', action='store_true')
     args = parser.parse_args()
     database = db.Database(os.environ.get('DATABASE_URL'))
+
+    logging.basicConfig(level=logging.INFO)
     method_db = methods.MethodDatabase(database)
     if args.create:
         method_db.update()
